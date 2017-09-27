@@ -1,0 +1,28 @@
+#activityPanel{
+    background-color:#e6e6e6;
+}
+#bucketPanel{
+    background-color:  #e6eeff;
+}
+#bucketListHeading{
+    font-size: 200%;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+}
+#activityHeading{
+    font-size: 150%;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    margin-right: 200px;
+}
+#bucketName{
+    font-size: 160%;
+    font-family: "Times New Roman", Times, serif;
+    color: 	 #002266;
+}
+#createBucket{
+    margin-left: 130px;
+}
+#titleMainPage2 {
+    font-weight: bold;
+}
