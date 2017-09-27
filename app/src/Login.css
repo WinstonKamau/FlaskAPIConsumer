@@ -1,0 +1,20 @@
+input[type=email], input[type=password] , input[type=text]{
+    width: 100%;
+    padding: 6px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+#loginButton {
+    width: 80%;
+    margin-left: 40px;
+}
+.loginLabels{
+    font-size: 120%;
+}
+p{
+    font-size: 120%;
+}
+
+
