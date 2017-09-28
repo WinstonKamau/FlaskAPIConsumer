@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios' ;
-import {CreateBucketModal, DeleteBucketModal, EditBucketModal,  MainPage} from './BucketListComponent.js';
-import {CreateActivityModal, DeleteActivityModal, EditActivityModal} from './ActivityListComponent.js';
+import { CreateBucketModal, DeleteBucketModal, EditBucketModal,  MainPage } from './BucketListComponent';
+import { CreateActivityModal, DeleteActivityModal, EditActivityModal } from './ActivityListComponent.js';
+import { Redirect } from 'react-router-dom';
+
 export class BucketList extends Component{
     constructor(props){
         super(props);
@@ -10,6 +12,7 @@ export class BucketList extends Component{
         this.open = this.open.bind(this);
         this.openActivities = this.openActivities.bind(this);
         this.close = this.close.bind(this);
+        this.handleClick = this.handleClick.bind(this);
         this.state={
             buckets: [],//dictionary of buckets of a user 
             showModal: false,//status of create Modal
@@ -44,6 +47,16 @@ export class BucketList extends Component{
             searchBucketStatus: null,//variable for status on search
             bucketChosen:'{No bucket chosen to display}',//variable for bucket list
             activityButtonStatus: true,//variable
+            logoutChosen: false,
+        }
+    }
+    handleClick(eventKey){
+        if(eventKey.target.name === "logout"){
+            localStorage.removeItem("bucketListToken");
+            this.setState({logoutChosen: true});
+        }
+        if(eventKey.target.name === ""){
+
         }
     }
     componentWillMount(){
@@ -408,13 +421,16 @@ export class BucketList extends Component{
             }
     }
     render(){
-
+        if ( localStorage.getItem("bucketListToken") === null ){
+            return <Redirect to="/" />;
+        }
         return(
             <div>
                 <MainPage open={this.open} data={this.state.buckets} openActivities={this.openActivities}
                 bucketChosen={this.state.bucketChosen} activityButtonStatus={this.state.activityButtonStatus}
                 activityData={this.state.activities} searchBucketError={this.state.searchBucketError} value={this.state.value}
                 searchBucketStatus={this.state.searchBucketStatus} handleChange={this.handleChange} searchData={this.state.bucketFound}
+                handleClick={this.handleClick}
                 />
                 <div>
                     <CreateBucketModal showModal={this.state.showModal} close={this.close} handleSubmit={this.handleSubmit}
