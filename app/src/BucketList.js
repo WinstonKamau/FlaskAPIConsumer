@@ -45,15 +45,25 @@ export class BucketList extends Component{
             bucketFound: [],//variable for bucket list found
             searchBucketError: '',//variable for error on search
             searchBucketStatus: null,//variable for status on search
-            bucketChosen:'{No bucket chosen to display}',//variable for bucket list
+            bucketChosen:'',//variable for bucket list
             activityButtonStatus: true,//variable
             logoutChosen: false,
+            bucketChosenTitle: '',
         }
     }
     handleClick(eventKey){
         if(eventKey.target.name === "logout"){
             localStorage.removeItem("bucketListToken");
             this.setState({logoutChosen: true});
+            axios.post('http://localhost:5000/auth/logout')
+            .then( response => {
+                this.setState({buckets:response.data})
+                console.log(response);
+                console.log(response.data.message);
+            })
+            .catch( error => {
+                console.log(error);
+            });
         }
         if(eventKey.target.name === ""){
 
@@ -168,7 +178,8 @@ export class BucketList extends Component{
         var authorizationValue = {headers: {'Authorization': token}};
         this.setState({
             bucketChosen: event.target.id,
-            activityButtonStatus: false
+            activityButtonStatus: false,
+            bucketChosenTitle: "BucketName:",
         })
         axios.get('http://localhost:5000/bucketlists/' + event.target.value +'/items/', authorizationValue
         ).then( response => {
@@ -430,7 +441,7 @@ export class BucketList extends Component{
                 bucketChosen={this.state.bucketChosen} activityButtonStatus={this.state.activityButtonStatus}
                 activityData={this.state.activities} searchBucketError={this.state.searchBucketError} value={this.state.value}
                 searchBucketStatus={this.state.searchBucketStatus} handleChange={this.handleChange} searchData={this.state.bucketFound}
-                handleClick={this.handleClick}
+                handleClick={this.handleClick} bucketChosenTitle={this.state.bucketChosenTitle}
                 />
                 <div>
                     <CreateBucketModal showModal={this.state.showModal} close={this.close} handleSubmit={this.handleSubmit}
