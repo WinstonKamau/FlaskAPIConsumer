@@ -1,72 +1,77 @@
 import React, { Component } from 'react';
-import {FormGroup,ControlLabel, HelpBlock,Button, Modal, Table} from 'react-bootstrap';
+import { FormGroup, ControlLabel, HelpBlock, Button, Modal, Table } from 'react-bootstrap';
 
 export class ActivityTable extends Component {
-    render(){
-        if(this.props.data.length === 0){
-            return(
-                <p>No activity</p>
-                );
-            };
-        return(
-            <Table condensed hover>
-                <thead>
-                    <tr>
-                        <th>Activity Name</th>
-                        <th>Edit Activity</th>
-                        <th>Delete Activity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.props.data.map(row =>
-                    (
-                    <tr>
-                        <td>{row.activity_name}</td>
-                        <td>
-                            <center>
-                            <Button type="submit" onClick={this.props.open} className="btn btn-default btn-sm glyphicon glyphicon-pencil" name="editActivityButton" id={row.activity_name} value={row.id}>
-                            </Button>
-                            </center>
-                        </td>
-                        <td>
-                            <center>
-                            <Button type="submit" onClick={this.props.open} className="btn btn-danger btn-sm glyphicon glyphicon-trash" name="deleteActivityButton" id={row.activity_name} value={row.id}>
-                            </Button>
-                            </center>
-                        </td>
-                    </tr>
-                    ),
-                    )}
-                </tbody>
-            </Table>
-        );
-          }
-        }
+  render() {
+    if (this.props.data.length === 0) {
+      return (
+        <HelpBlock>You have no activities</HelpBlock>
+      );
+    }
+    return (
+      <Table condensed hover>
+        <thead>
+          <tr>
+            <th>Activity Name</th>
+            <th>Edit Activity</th>
+            <th>Delete Activity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.props.data.map(row =>
+            (
+              <tr>
+                <td>{row.activity_name}</td>
+                <td>
+                  <center>
+                    <Button type="submit" onClick={this.props.open} className="btn btn-default btn-sm glyphicon glyphicon-pencil" name="editActivityButton" id={row.activity_name} value={row.id} />
+                  </center>
+                </td>
+                <td>
+                  <center>
+                    <Button
+                      type="submit"
+                      onClick={this.props.open}
+                      className="btn btn-danger btn-sm glyphicon glyphicon-trash"
+                      name="deleteActivityButton"
+                      id={row.activity_name}
+                      value={row.id}
+                    />
+                  </center>
+                </td>
+              </tr>
+            ),
+          )}
+        </tbody>
+      </Table>
+    );
+  }
+}
 
-export class CreateActivityModal extends Component{
-    render(){
-        return(
-            <Modal show={this.props.showActivityModal} onHide={this.props.close}>
-                <form onSubmit={this.props.handleSubmit} name="createActivityForm">
-                    <Modal.Header>
-                    <Modal.Title>Create a new Activity</Modal.Title>
+export class CreateActivityModal extends Component {
+  render() {
+    return (
+      <Modal show={this.props.showActivityModal} onHide={this.props.close}>
+        <form onSubmit={this.props.handleSubmit} name="createActivityForm">
+          <Modal.Header>
+            <Modal.Title>Create a new Activity</Modal.Title>
                         
-                    </Modal.Header>
+          </Modal.Header>
             
-                    <Modal.Body>
-                        <FormGroup validationState={this.props.createStatusActivityForm}>
-                            <HelpBlock>{this.props.createActivityError}</HelpBlock>
-                            <ControlLabel >New Activity Name </ControlLabel>
-                            <input name="activity_name" type="text" onChange={this.props.handleChange} required/>
-                        </FormGroup>
-                    </Modal.Body>
+          <Modal.Body>
+            <FormGroup validationState={this.props.createStatusActivityForm}>
+              <HelpBlock>{this.props.createActivityError}</HelpBlock>
+              <ControlLabel >New Activity Name </ControlLabel>
+              <input name="activity_name" type="text" onChange={this.props.handleChange} required/>
+            </FormGroup>
+          </Modal.Body>
             
-                    <Modal.Footer>
-                    <Button name="closeActivityButton" onClick={this.props.close}>Close</Button>
-                    <Button type="submit" bsStyle="primary">Save changes</Button>
-                    </Modal.Footer>
-                </form>
-            </Modal>
+          <Modal.Footer>
+            <Button name="closeActivityButton" onClick={this.props.close}>Close</Button>
+            <Button type="submit" bsStyle="primary">Save changes</Button>
+          </Modal.Footer>
+        </form>
+      </Modal>
         );
         
     }
