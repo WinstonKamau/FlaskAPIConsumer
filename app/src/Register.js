@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios' ;
-import {RegisterForm} from './RegisterComponent';
+import { RegisterForm } from './RegisterComponent.jsx';
+import { Redirect } from 'react-router-dom';
 
 export class Register extends Component{
     constructor(props) {
@@ -22,6 +23,7 @@ export class Register extends Component{
           userConflictStatus: null,
           registerStateMessage:'' ,
           registerButtonStatus: true,
+          registerState: false,
         }
       }
     handleChange(e){
@@ -56,6 +58,7 @@ export class Register extends Component{
     }
     handleSubmit(event){
         event.preventDefault();
+        localStorage.removeItem("bucketListToken");
         console.log(this.state.user_email);
         console.log(this.state.user_password);
         axios.post('http://localhost:5000/auth/register', {
@@ -65,6 +68,19 @@ export class Register extends Component{
           .then( response => {
             console.log(response);
             console.log(response.data);
+            axios.post('http://localhost:5000/auth/login', {
+                user_email: this.state.user_email,
+                user_password: this.state.user_password 
+              })
+              .then(response => {
+                console.log(response.status);
+                if(response.status === 200 ){
+                    localStorage.setItem('bucketListToken', "Bearer " + response.data["access-token"]);
+                }
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
             this.setState({registerState: true});
             this.setState({registerStateMessage: response.data["message"]});
           })
@@ -82,6 +98,11 @@ export class Register extends Component{
         this.setState({passwordState: typeOfInput});
     };
     render(){
+        if (this.state.registerState === true ){
+            return(
+                <Redirect to="/bucketlist" />
+            );
+        }
         return(
             <div>
                 <RegisterForm handleSubmit={this.handleSubmit} userConflictStatus={this.state.userConflictStatus}
