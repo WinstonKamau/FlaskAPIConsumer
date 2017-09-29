@@ -5,6 +5,7 @@ import './Login.css';
 import {Redirect} from 'react-router-dom';
 import {Register} from './Register';
 import {LoginForm} from './LoginComponent';
+import AlertContainer from 'react-alert';
 
 export class Login extends Component{
     constructor(props) {
@@ -21,8 +22,25 @@ export class Login extends Component{
           loginStatus: false,
           signInButtonState: true,
           signUpButtonState: false,
+          loginErrorMessage: '',
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+      }
+      alertOptions = {
+        offset: 14,
+        position: 'top right',
+        theme: 'dark',
+        time: 5000,
+        transition: 'scale'
+      }
+      showDescriptiveError = () => {
+        this.msg.error(this.state.loginErrorMessage)
+      }
+      showAlert = () => {
+        this.msg.show('You have been logged in!')
+      }
+      showError = () => {
+        this.msg.error('Oops there is something wrong!')
       }
     handleChange(e){
         if (e.target.name === "user_email")
@@ -32,21 +50,25 @@ export class Login extends Component{
     }
     handleSubmit(event){
         event.preventDefault();
-        console.log(this.state.user_email);
-        console.log(this.state.user_password);
         axios.post('http://localhost:5000/auth/login', {
             user_email: this.state.user_email,
             user_password: this.state.user_password 
           })
           .then(response => {
-            console.log(response.status);
             if(response.status === 200 ){
                 localStorage.setItem('bucketListToken', "Bearer " + response.data["access-token"]);
                 this.setState({loginStatus: true});
             }
           })
-          .catch(function (error) {
-            console.log(error);
+          .catch(error => {
+            if (error.response === undefined){
+                this.showError()
+            }
+            else{
+                this.setState({loginErrorMessage: error.response.data["message"]});
+                this.showDescriptiveError();
+            }
+
           });
         
     }
@@ -81,6 +103,7 @@ export class Login extends Component{
     };
     return(
         <div>
+            <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
             <Button id="signIn" onClick={this.signIn} className="btn btn-default" disabled={this.state.signInButtonState}>Sign In</Button>
             <Button id="signUp" onClick={this.signUp}disabled={this.state.signUpButtonState} className="btn btn-default">Sign Up</Button>
             <LoginForm handleSubmit={this.handleSubmit} handleChange={this.handleChange} stateOfEntry={this.state.stateOfEntry}
