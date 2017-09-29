@@ -3,6 +3,7 @@ import axios from 'axios' ;
 import { CreateBucketModal, DeleteBucketModal, EditBucketModal,  MainPage } from './BucketListComponent';
 import { CreateActivityModal, DeleteActivityModal, EditActivityModal } from './ActivityListComponent.js';
 import { Redirect } from 'react-router-dom';
+import AlertContainer from 'react-alert';
 
 export class BucketList extends Component{
     constructor(props){
@@ -13,6 +14,7 @@ export class BucketList extends Component{
         this.openActivities = this.openActivities.bind(this);
         this.close = this.close.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.onHover = this.onHover.bind(this);
         this.state={
             buckets: [],//dictionary of buckets of a user 
             showModal: false,//status of create Modal
@@ -49,24 +51,42 @@ export class BucketList extends Component{
             activityButtonStatus: true,//variable
             logoutChosen: false,
             bucketChosenTitle: '',
+            errorMessage:'',
+            authState: false,
+            activityPanelStatus: true,
         }
     }
+    alertOptions = {
+        offset: 14,
+        position: 'top right',
+        theme: 'dark',
+        time: 5000,
+        transition: 'scale'
+      }
+    showDescriptiveError = () => {
+        this.msg.error(this.state.errorMessage)
+    }
+    showError = () => {
+        this.msg.error('Oops there is something wrong!')
+      }
     handleClick(eventKey){
         if(eventKey.target.name === "logout"){
             localStorage.removeItem("bucketListToken");
             this.setState({logoutChosen: true});
             axios.post('http://localhost:5000/auth/logout')
             .then( response => {
-                this.setState({buckets:response.data})
-                console.log(response);
-                console.log(response.data.message);
             })
             .catch( error => {
-                console.log(error);
+                if (error.response === undefined){
+                }
+                else{
+                    this.setState({errorMessage: error.response.data["message"]});
+                    this.showDescriptiveError();
+                }
             });
         }
-        if(eventKey.target.name === ""){
-
+        if(eventKey.target.name === "myAccount"){
+            this.setState({authState: true});
         }
     }
     componentWillMount(){
@@ -77,11 +97,15 @@ export class BucketList extends Component{
         axios.get('http://localhost:5000/bucketlists/', authorizationValue
         ).then( response => {
             this.setState({buckets:response.data})
-            console.log(response);
-            console.log(response.status);
         })
         .catch( error => {
-            console.log(error);
+            if (error.response === undefined){
+                this.showError()
+            }
+            else{
+                this.setState({errorMessage: error.response.data["message"]});
+                this.showDescriptiveError();
+            }
         });
     }
     updateTable(){
@@ -92,21 +116,30 @@ export class BucketList extends Component{
         axios.get('http://localhost:5000/bucketlists/', authorizationValue
         ).then( response => {
             this.setState({buckets:response.data})
-            console.log(response);
-            console.log(response.status);
         })
         .catch( error => {
-            console.log(error);
+            if (error.response === undefined){
+                this.showError()
+            }
+            else{
+                this.setState({errorMessage: error.response.data["message"]});
+                this.showDescriptiveError();
+            }
         });
         if (this.state.bucketIDCreateActivity != null )
             {
             axios.get('http://localhost:5000/bucketlists/' + this.state.bucketIDCreateActivity +'/items/', authorizationValue
             ).then( response => {
                 this.setState({activities:response.data});
-                console.log(response.data);
             })
             .catch( error => {
-                console.log(error);
+                if (error.response === undefined){
+                    this.showError()
+                }
+                else{
+                    this.setState({errorMessage: error.response.data["message"]});
+                    this.showDescriptiveError();
+                }
             });
             }
     }
@@ -115,7 +148,6 @@ export class BucketList extends Component{
         if (e.target.name === "bucket_name")
             {
             this.setState({new_bucket:e.target.value})
-            console.log(this.state.new_bucket);
             }
         if(e.target.name === "editBucketName")
             {
@@ -124,12 +156,10 @@ export class BucketList extends Component{
         if(e.target.name === "activity_name")
             {
             this.setState({newActivity:e.target.value})
-            console.log(this.state.newActivity) 
             }
         if (e.target.name === "editActivityName")
             {
             this.setState({potentialActivityName: e.target.value});
-            console.log (this.state.potentialActivityName);
             }
         if (e.target.name === "searchBucket")
             {
@@ -158,7 +188,13 @@ export class BucketList extends Component{
 
                 })
                 .catch( error => {
-                    console.log(error);
+                    if (error.response === undefined){
+                        this.showError()
+                    }
+                    else{
+                        this.setState({errorMessage: error.response.data["message"]});
+                        this.showDescriptiveError();
+                    }
                 });
                 }
             else
@@ -186,10 +222,15 @@ export class BucketList extends Component{
             this.setState({
                 activities:response.data,
             });
-            console.log(response.data);
         })
         .catch( error => {
-            console.log(error);
+            if (error.response === undefined){
+                this.showError()
+            }
+            else{
+                this.setState({errorMessage: error.response.data["message"]});
+                this.showDescriptiveError();
+            }
         });
     }
     handleSubmit(event){
@@ -208,9 +249,15 @@ export class BucketList extends Component{
                 this.updateTable();
             })
             .catch( error => {
+                if (error.response === undefined){
+                    this.showError()
+                }
+                else{
+            
                 this.setState({
                     createBucketError: error.response.data["message"],
                     createStatusForm: "error"});
+               }
             });
             }
         if (event.target.name === "editBucketForm")
@@ -223,11 +270,15 @@ export class BucketList extends Component{
                 this.componentWillMount();
             })
             .catch( error => {
-                console.log(error);
-                this.setState({
-                    editBucketError:error.response.data["message"],
-                    editStatusForm:"error"
-                });
+                if (error.response === undefined){
+                    this.showError()
+                }
+                else{
+                    this.setState({
+                        editBucketError:error.response.data["message"],
+                        editStatusForm:"error"
+                    });
+                }
             });
             }
         if (event.target.name === "deleteBucketForm")
@@ -239,7 +290,13 @@ export class BucketList extends Component{
                 this.componentWillMount();
             })
             .catch( error => {
-                console.log(error);
+                if (error.response === undefined){
+                    this.showError()
+                }
+                else{
+                    this.setState({errorMessage: error.response.data["message"]});
+                    this.showDescriptiveError();
+                }
             });
             }
         if(event.target.name === "createActivityForm")
@@ -256,9 +313,13 @@ export class BucketList extends Component{
                 console.log(response.data);
             })
             .catch( error => {
-                console.log(error);
-                this.setState({createStatusActivityForm: "error"});
-                this.setState({createActivityError: error.response.data["message"]});
+                if (error.response === undefined){
+                    this.showError()
+                }
+                else{
+                    this.setState({createStatusActivityForm: "error"});
+                    this.setState({createActivityError: error.response.data["message"]});
+                }
             });
             }
         if(event.target.name === "editActivityForm")
@@ -273,15 +334,17 @@ export class BucketList extends Component{
                     showEditActivityModal: false
             });
                 this.updateTable();
-                console.log(response.data);
             })
             .catch( error => {
-                console.log(error);
+                if (error.response === undefined){
+                    this.showError()
+                }
+                else{
                 this.setState({
                     editActivityError:error.response.data["message"],
                     editStatusActivityForm: "error"
                 });
-
+            }
             });
             }
         if(event.target.name === "deleteActivityForm")
@@ -294,15 +357,19 @@ export class BucketList extends Component{
                 showDeleteActivityModal: false
             }); 
                 this.updateTable();
-                console.log(response.data);
             })
             .catch( error => {
-                console.log(error);
+                if (error.response === undefined){
+                    this.showError()
+                }
+                else{
+                    this.setState({errorMessage: error.response.data["message"]});
+                    this.showDescriptiveError();
+                }
             });
             }
     }
     open(e) {
-        console.log(e);
         if (e.target.name === "createBucketButton")
             {    
             this.setState({ showModal: true });
@@ -357,13 +424,26 @@ export class BucketList extends Component{
                 this.setState({
                     activities:response.data,
                     });
-                console.log(response.data);
                 })
             .catch( error => {
-                console.log(error);
+                if (error.response === undefined){
+                    this.showError()
+                }
+                else{
+                    this.setState({errorMessage: error.response.data["message"]});
+                    this.showDescriptiveError();
+                }
                 });
             }
       }
+    onHover(event){
+            document.getElementById("activityPanel").style.backgroundColor = "#d3d3d3";
+    }
+    onMouseOut(event){
+        if ( event.target.id === "activityPanel"){
+            document.getElementById("activityPanel").style.backgroundColor = "#696969";
+        }
+    }
     close(e) {
         if (e === undefined )
             {
@@ -423,7 +503,6 @@ export class BucketList extends Component{
                 }
             if (e.target.name === "closeDeleteActivityButton")
                 {
-                console.log("asdfasd")
                 this.setState({
                     showDeleteActivityModal:false,
                     deletableActivityName: ''
@@ -435,13 +514,18 @@ export class BucketList extends Component{
         if ( localStorage.getItem("bucketListToken") === null ){
             return <Redirect to="/" />;
         }
+        if (this.state.authState === true){
+            return <Redirect to="/auth/" />
+            }
         return(
             <div>
+                <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
                 <MainPage open={this.open} data={this.state.buckets} openActivities={this.openActivities}
                 bucketChosen={this.state.bucketChosen} activityButtonStatus={this.state.activityButtonStatus}
                 activityData={this.state.activities} searchBucketError={this.state.searchBucketError} value={this.state.value}
                 searchBucketStatus={this.state.searchBucketStatus} handleChange={this.handleChange} searchData={this.state.bucketFound}
-                handleClick={this.handleClick} bucketChosenTitle={this.state.bucketChosenTitle}
+                handleClick={this.handleClick} bucketChosenTitle={this.state.bucketChosenTitle}  onHover={this.onHover}
+                activityPanelStatus={this.state.activityPanelStatus} onMouseOut={this.onMouseOut}
                 />
                 <div>
                     <CreateBucketModal showModal={this.state.showModal} close={this.close} handleSubmit={this.handleSubmit}
