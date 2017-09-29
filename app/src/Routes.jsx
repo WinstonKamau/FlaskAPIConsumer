@@ -7,6 +7,7 @@ import {
 import { HomePage } from './Home';
 import { BucketList } from './BucketList';
 import './Routes.css';
+import { Account } from './MyAccount';
 
 const Routes = () => (
   <Router>
@@ -14,6 +15,7 @@ const Routes = () => (
       <Link to="/" />
       <Route exact path="/" component={HomePage} />
       <Route path="/bucketlist/" component={BucketList} />
+      <Route path="/auth/" component={Account} />
     </div>
   </Router>
 );
