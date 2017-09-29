@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios' ;
 import { RegisterForm } from './RegisterComponent.jsx';
 import { Redirect } from 'react-router-dom';
+import AlertContainer from 'react-alert';
 
 export class Register extends Component{
     constructor(props) {
@@ -24,7 +25,25 @@ export class Register extends Component{
           registerStateMessage:'' ,
           registerButtonStatus: true,
           registerState: false,
+          loginRegisterErrorMessage:'',
         }
+      }
+      alertOptions = {
+        offset: 14,
+        position: 'top right',
+        theme: 'dark',
+        time: 5000,
+        transition: 'scale'
+      }
+     
+      showAlert = () => {
+        this.msg.show('You have been logged in!')
+      }
+      showError = () => {
+        this.msg.error('Oops there is something wrong!')
+      }
+      showDescriptiveError = () => {
+        this.msg.error(this.state.loginRegisterErrorMessage);
       }
     handleChange(e){
         this.setState({user_email:e.target.value,})
@@ -59,37 +78,42 @@ export class Register extends Component{
     handleSubmit(event){
         event.preventDefault();
         localStorage.removeItem("bucketListToken");
-        console.log(this.state.user_email);
-        console.log(this.state.user_password);
         axios.post('http://localhost:5000/auth/register', {
             user_email: this.state.user_email,
             user_password: this.state.user_password 
           })
           .then( response => {
-            console.log(response);
-            console.log(response.data);
+            this.showAlert()
             axios.post('http://localhost:5000/auth/login', {
                 user_email: this.state.user_email,
                 user_password: this.state.user_password 
               })
               .then(response => {
-                console.log(response.status);
                 if(response.status === 200 ){
                     localStorage.setItem('bucketListToken', "Bearer " + response.data["access-token"]);
+                    this.setState({registerState:true});
                 }
               })
-              .catch(function (error) {
-                console.log(error);
+              .catch( error => {
+                if (error.response === undefined){
+                    this.showError()
+                }
+                else{
+                    this.setState({loginRegisterErrorMessage: error.response.data["message"]});
+                    this.showDescriptiveError();
+                }
               });
-            this.setState({registerState: true});
-            this.setState({registerStateMessage: response.data["message"]});
+           
+
           })
           .catch( error => {
-            console.log(error);
+            if (error.response === undefined)
+                {this.showError()}
+            else{
             this.setState({
                 userConflictStatus: "error",
                 userConflictMessage: error.response.data["message"],
-            });
+            });}
           });
 
     }
@@ -105,6 +129,7 @@ export class Register extends Component{
         }
         return(
             <div>
+                <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
                 <RegisterForm handleSubmit={this.handleSubmit} userConflictStatus={this.state.userConflictStatus}
                 handleChange={this.handleChange} userConflictMessage={this.state.userConflictMessage}
                 stateOfEntry={this.state.stateOfEntry} validatePassword={this.validatePassword}
