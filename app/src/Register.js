@@ -37,7 +37,7 @@ export class Register extends Component{
       }
      
       showAlert = () => {
-        this.msg.show('You have been logged in!')
+        this.msg.success('You have been logged in!')
       }
       showError = () => {
         this.msg.error('Oops there is something wrong!')
@@ -61,12 +61,25 @@ export class Register extends Component{
         if (passwordEntered.length > 6) {
             this.setState({stateOfEntry: "success"});
             this.setState({user_password: e.target.value});
+            if (this.state.theConfirmPassword == e.target.value){
+                this.setState({
+                    stateOfConfirmEntry: "success",
+                    registerButtonStatus: false
+                })
+            }
         }
         else this.setState({stateOfEntry:"error"});
+        if (this.state.theConfirmPassword != e.target.value){
+            this.setState({
+                stateOfConfirmEntry: "error",
+                registerButtonStatus: true
+            })
+        }
     }
 
 
     confirmPassword(e){
+        this.setState({theConfirmPassword: e.target.value})
         let confirmPassword = e.target.value;
         if (confirmPassword === document.getElementById("registerPasswordInput").value && this.state.stateOfEntry === "success"){
             this.setState({stateOfConfirmEntry: "success"});
@@ -113,7 +126,10 @@ export class Register extends Component{
             this.setState({
                 userConflictStatus: "error",
                 userConflictMessage: error.response.data["message"],
-            });}
+                loginRegisterErrorMessage: error.response.data["message"]
+            });
+            this.showDescriptiveError();
+            }
           });
 
     }
