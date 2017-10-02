@@ -77,7 +77,7 @@ export class Account extends Component {
                 confirmPassword: "",
             })
         }
-        if (event.target.name === "saveButton" ){
+        if (event.target.name === "saveButton" ) {
             axios.post('http://localhost:5000/auth/login', {
             user_email: this.state.accountEmail,
             user_password: this.state.oldPassword
