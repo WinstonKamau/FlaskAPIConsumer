@@ -95,7 +95,6 @@ export class Login extends Component{
     if (this.state.signUpButtonState === true){
         return (
         <div>
- 
             <Register signIn={this.signIn} signInButtonState={this.state.signInButtonState} signUp={this.signUp}
              signUpButtonState={this.state.signUpButtonState}/>
         </div> 
@@ -115,4 +114,3 @@ export class Login extends Component{
     );
     }
 }
-
