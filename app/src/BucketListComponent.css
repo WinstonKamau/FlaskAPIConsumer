@@ -1,7 +1,7 @@
 #activityPanel{
     background-color:#e6e6e6;
 }
-#bucketPanel{
+#bucketPanel {
     background-color:  #e6eeff;
 }
 #bucketListHeading{
@@ -21,8 +21,12 @@
     color: 	 #002266;
 }
 #createBucket{
-    margin-left: 130px;
+    margin-left: 100px;
 }
-#titleMainPage2 {
+#titleHeader {
+    font-family: "Times New Roman", Times, serif;
     font-weight: bold;
+    font-style: italic;
+    padding: 50px;
+    font-size: 250%;
 }
