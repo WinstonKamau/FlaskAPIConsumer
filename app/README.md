@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/WinstonKamau/FlaskAPIConsumer.svg?branch=development)](https://travis-ci.org/WinstonKamau/FlaskAPIConsumer)
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
