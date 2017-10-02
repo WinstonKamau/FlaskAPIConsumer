@@ -194,7 +194,7 @@ export class MainPage extends Component {
             <SearchBucketTable data={this.props.searchData} open={this.props.open} />
           </div>
           <div className="col-md-5 col-sm-5 col-xs-5">
-            <span id="titleHeader">The Bucket List</span>
+            <span id="titleHeader">The Bucket List !</span>
           </div>
           <div className="col-md-2 col-sm-2 col-xs-2">
             <DropdownButton title="Menu" id="bg-vertical-dropdown-1">
@@ -211,7 +211,7 @@ export class MainPage extends Component {
         </div>
         <div className="panel col-md-6 col-sm-6 col-xs-6" id="bucketPanel" >
           <div className="panel-heading">
-            <span id="bucketListHeading">My BucketList</span>
+            <span id="bucketListHeading">My Bucket List</span>
             <Button
               id="createBucket"
               name="createBucketButton"
@@ -219,6 +219,12 @@ export class MainPage extends Component {
               onClick={this.props.open}
               bsSize="small"
             >Create New Bucket</Button>
+          </div>
+          <div>
+            {this.props.pageButtons.map(button =>(
+              <Button onClick={this.props.handlePages} value={button}>{button}</Button>
+            ))
+            }
           </div>
           <hr />
           <div className="panel-body">
