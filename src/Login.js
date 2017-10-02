@@ -10,10 +10,11 @@ import AlertContainer from 'react-alert';
 export class Login extends Component{
     constructor(props) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
         this.showLoginPassword = this.showLoginPassword.bind(this);
         this.signUp = this.signUp.bind(this);
         this.signIn = this.signIn.bind(this);
+        this.handleChangePassword = this.handleChangePassword.bind(this);
+        this.handleChangeEmail = this.handleChangeEmail.bind(this);
         this.state = {
           loginPasswordState: "password",
           stateOfEntry: null,
@@ -42,11 +43,13 @@ export class Login extends Component{
       showError = () => {
         this.msg.error('Oops there is something wrong!')
       }
-    handleChange(e){
-        if (e.target.name === "user_email")
-        this.setState({user_email: e.target.value});
-        if (e.target.name === "user_password")
+    handleChangePassword(e){
+        console.log(e.target.value);
         this.setState({user_password: e.target.value});
+    }
+    handleChangeEmail(e){
+        console.log(e.target.value);
+        this.setState({user_email: e.target.value});
     }
     handleSubmit(event){
         event.preventDefault();
@@ -105,10 +108,10 @@ export class Login extends Component{
             <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
             <Button id="signIn" onClick={this.signIn} className="btn btn-default" disabled={this.state.signInButtonState}>Sign In</Button>
             <Button id="signUp" onClick={this.signUp}disabled={this.state.signUpButtonState} className="btn btn-default">Sign Up</Button>
-            <LoginForm handleSubmit={this.handleSubmit} handleChange={this.handleChange} stateOfEntry={this.state.stateOfEntry}
+            <LoginForm handleSubmit={this.handleSubmit} stateOfEntry={this.state.stateOfEntry}
             loginPasswordState={this.state.loginPasswordState} showLoginPassword={this.showLoginPassword}
             signInButtonState={this.state.signInButtonState} signUpButtonState={this.state.signUpButtonState}
-            signUp={this.signUp} signIn={this.signIn}
+            signUp={this.signUp} signIn={this.signIn} handleChangePassword={this.handleChangePassword} handleChangeEmail={this.handleChangeEmail}
             />
         </div>
     );
