@@ -44,11 +44,9 @@ export class Login extends Component{
         this.msg.error('Oops there is something wrong!')
       }
     handleChangePassword(e){
-        console.log(e.target.value);
         this.setState({user_password: e.target.value});
     }
     handleChangeEmail(e){
-        console.log(e.target.value);
         this.setState({user_email: e.target.value});
     }
     handleSubmit(event){
