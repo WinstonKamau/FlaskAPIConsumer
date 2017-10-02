@@ -1,1 +1,0 @@
-[![Build Status](https://travis-ci.org/WinstonKamau/FlaskAPIConsumer.svg?branch=development)](https://travis-ci.org/WinstonKamau/FlaskAPIConsumer)
