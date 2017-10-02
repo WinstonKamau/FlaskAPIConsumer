@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/WinstonKamau/FlaskAPIConsumer.svg?branch=development)](https://travis-ci.org/WinstonKamau/FlaskAPIConsumer)
+[![Coverage Status](https://coveralls.io/repos/github/WinstonKamau/FlaskAPIConsumer/badge.svg?branch=development)](https://coveralls.io/github/WinstonKamau/FlaskAPIConsumer?branch=development)
 ## What does this App do?
 This app provides you with a web view that allows you to 
 - Sign Up yourself as a user for you to access the app
