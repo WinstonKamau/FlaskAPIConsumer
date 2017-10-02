@@ -70,7 +70,7 @@ export class BucketList extends Component{
         this.msg.error(this.state.errorMessage)
     }
     showError = () => {
-        this.msg.error('Oops there is something wrong!')
+        // this.msg.error('Oops there is something wrong!')
       }
     showSuccessMessage = () => {
         this.msg.success(this.state.successMessage)
