@@ -158,6 +158,3 @@ export class Register extends Component{
         );
     };
 }
-
-
-
