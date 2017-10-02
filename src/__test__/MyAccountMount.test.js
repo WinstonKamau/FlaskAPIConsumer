@@ -78,10 +78,4 @@ describe('<Account />', () => {
     wrapper.instance().showAccountPassword();
     expect(wrapper.state().passwordAccountState).to.equal('text');
   });
-//   it('showAccountPassword sets password state', () => {
-//     const wrapper = mount(<Account />);
-//     wrapper.instance().handleClick({ target: { name: 'saveButton' } });
-//   });
-
-
 });
