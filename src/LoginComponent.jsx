@@ -7,14 +7,14 @@ export class LoginForm extends Component {
       <form onSubmit={this.props.handleSubmit}>
         <FormGroup>
           <ControlLabel className="loginLabels">Email: </ControlLabel>
-          <input name="user_email" type="email" required onChange={this.props.handleChange}/>
+          <input name="user_email" type="email" required onChange={this.props.handleChangeEmail}/>
         </FormGroup>
         <FormGroup validationState={this.props.stateOfEntry}>
           <ControlLabel className="loginLabels">Password: </ControlLabel>
           <input
             id="loginPasswordInput"
             name="user_password"
-            onChange={this.props.handleChange}
+            onChange={this.props.handleChangePassword}
             type={this.props.loginPasswordState}
             required
           />
