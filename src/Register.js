@@ -61,7 +61,7 @@ export class Register extends Component{
         if (passwordEntered.length > 6) {
             this.setState({stateOfEntry: "success"});
             this.setState({user_password: e.target.value});
-            if (this.state.theConfirmPassword == e.target.value){
+            if (this.state.theConfirmPassword === e.target.value){
                 this.setState({
                     stateOfConfirmEntry: "success",
                     registerButtonStatus: false
@@ -69,7 +69,7 @@ export class Register extends Component{
             }
         }
         else this.setState({stateOfEntry:"error"});
-        if (this.state.theConfirmPassword != e.target.value){
+        if (this.state.theConfirmPassword !== e.target.value){
             this.setState({
                 stateOfConfirmEntry: "error",
                 registerButtonStatus: true
