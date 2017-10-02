@@ -205,6 +205,7 @@ export class MainPage extends Component {
                 onClick={this.props.handleClick}
                 eventKey="2"
                 name="logout"
+                id="logoutButton"
               >Logout</MenuItem>
             </DropdownButton>
           </div>
