@@ -79,9 +79,8 @@ export class Register extends Component{
 
 
     confirmPassword(e){
-        this.setState({theConfirmPassword: e.target.value})
         let confirmPassword = e.target.value;
-        if (confirmPassword === document.getElementById("registerPasswordInput").value && this.state.stateOfEntry === "success"){
+        if (confirmPassword === this.state.user_password && this.state.stateOfEntry === "success"){
             this.setState({stateOfConfirmEntry: "success"});
             this.setState({registerButtonStatus: false});
         }
