@@ -128,6 +128,7 @@ export class Account extends Component {
             if (newPasswordEntered.length > 6 ){
             this.setState({newPassword: event.target.value})
             }
+
         }
         if (event.target.id ==="confirmPassword"){
             this.setState({confirmPassword: event.target.value})
@@ -183,6 +184,7 @@ export class Account extends Component {
         showAccountPassword={this.showAccountPassword} handleChange={this.handleChange}
         bucketListPage={this.state.bucketListPage} logoutPage={this.state.logoutPage} showSave={this.state.showSave}
         changePasswordButton={this.state.changePasswordButton} handleSubmit={this.handleSubmit} showClose={this.state.showClose}
+        accountStatusForm={this.state.accountStatusForm}
         />
       </div>
     )

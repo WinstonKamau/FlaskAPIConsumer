@@ -67,7 +67,7 @@ export class BucketList extends Component{
         transition: 'scale'
       }
     showDescriptiveError = () => {
-        this.msg.error(this.state.errorMessage)
+        // this.msg.error(this.state.errorMessage)
     }
     showError = () => {
         // this.msg.error('Oops there is something wrong!')
@@ -119,16 +119,20 @@ export class BucketList extends Component{
         var authorizationValue = {
             headers: {'Authorization': token}
           };
-        axios.get('http://localhost:5000/bucketlists/?page=1', authorizationValue
+        axios.get('http://localhost:5000/bucketlists/', authorizationValue
         ).then( response => {
-            let buttonArray = [];
+            if (response.data["pages"])
+            {let buttonArray = [];
             for ( let i=1; i <= response.data["pages"]; i++){
                 buttonArray.push(i);
             };
             this.setState({
                 buckets:response.data["message"],
                 pageButtons: buttonArray
-            })
+            })}
+            else{
+                this.setState({buckets:response.data})
+            }
         })
         .catch( error => {
             if (error.response === undefined){
@@ -319,7 +323,8 @@ export class BucketList extends Component{
                     this.setState({
                         activities:[],
                         bucketChosenTitle: "",
-                        bucketChosen: ""
+                        bucketChosen: "",
+                        activityButtonStatus: true
                     })
                 }
                 this.componentWillMount();
