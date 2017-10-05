@@ -23,11 +23,6 @@ describe('<CreateBucketModal />', () => {
 });
 
 describe('<BucketTable />', () => {
-  it('renders helpblock once there are no buckets', () => {
-    const wrapper = shallow(<BucketTable data={[]} />);
-    expect(wrapper.contains(
-      <Redirect to="/" />)).to.equal(true);
-  });
   it('', () => {
     const wrapper = shallow(<BucketTable data={[]} />);
   });

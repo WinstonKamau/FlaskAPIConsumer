@@ -317,16 +317,6 @@ it('calls componentWillMount', () => {
     wrapper.instance().handlePages({ target: '' });
     expect(BucketList.prototype.handlePages.called).to.equal(true);
   });
-  // it('redirect on change of state', () => {
-  //   const wrapper = mount(<MemoryRouter>
-  //     <BucketList />
-  //   </MemoryRouter>
-  //   );
-  //   wrapper.setState({ authState: true });
-  //   console.log(wrapper.state().authState);
-  //   console.log(wrapper.contains(<Redirect to="/auth/" />));
-  //   console.log(wrapper.text());
-  // });
 });
 
 describe('<BucketList />', () => {
@@ -345,16 +335,6 @@ describe('<BucketList />', () => {
     wrapper.instance().handleClick({ target: { name: 'logout' } });
     expect(BucketList.prototype.handleClick.calledOnce).to.equal(true);
   }); 
-  it('calls handleClick', () => {
-    const wrapper = mount(<BucketList />);
-    const pop = { bucketListToken: null };
-    global.localStorage = {
-      bucketListToken: '', getItem: function() {
-        return pop["bucketListToken"]
-      }
-    };
-    expect(wrapper.contains(<Redirect to="/" />)).to.equal(true);
-  });
 });
 
 
