@@ -4,6 +4,8 @@ import Enzyme from 'enzyme';
 import { shallow, mount, simulate } from 'enzyme'
 import { expect } from 'chai';
 import { Account } from '../MyAccount';
+import sinon from 'sinon';
+import { MemoryRouter } from 'react-router-dom';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -77,5 +79,26 @@ describe('<Account />', () => {
     expect(wrapper.state().passwordAccountState).to.equal('password');
     wrapper.instance().showAccountPassword();
     expect(wrapper.state().passwordAccountState).to.equal('text');
+  });
+  it('save button', () => {
+    sinon.spy(Account.prototype, 'handleClick');
+    const wrapper = mount(<Account />);
+    wrapper.instance().handleClick({ target: { name: 'saveButton' } });
+    expect(Account.prototype.handleClick.called).to.equal(true);
+  });
+  it('calls handleSubmit', () => {
+    const pop = { bucketListToken: 'this is awesome' };
+    global.localStorage = {
+      bucketListToken: '',
+      removeItem: function() {
+        return ""
+      }, getItem: function() {
+        return pop["bucketListToken"]
+      }
+    };
+    sinon.spy(Account.prototype, 'handleSubmit');
+    const wrapper = mount(<Account />);
+    wrapper.instance().handleSubmit({ preventDefault: () => {} });
+    expect(Account.prototype.handleSubmit.called).to.equal(true);
   });
 });

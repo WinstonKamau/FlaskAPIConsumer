@@ -4,6 +4,7 @@ import Enzyme from 'enzyme';
 import { mount, simulate } from 'enzyme'
 import { expect } from 'chai';
 import { Register } from '../Register';
+import sinon from 'sinon';
 
 Enzyme.configure({ adapter: new Adapter() });
  
@@ -127,5 +128,19 @@ describe('<Register />', () => {
     expect(wrapper.state().passwordState).to.equal('text');
     wrapper.instance().showPassword();
     expect(wrapper.state().passwordState).to.equal('password');
+  });
+  it('handleSubmit is called', () => {
+    global.localStorage = {
+      bucketListToken: '',
+      removeItem: function() {
+        return ""
+      }, getItem: function() {
+        return pop["bucketListToken"]
+      }
+    };
+    sinon.spy(Register.prototype, 'handleSubmit');
+    const wrapper = mount(<Register />);
+    wrapper.instance().handleSubmit({ preventDefault: () => {} });
+    expect(Register.prototype.handleSubmit.calledOnce).to.equal(true);
   });
 });

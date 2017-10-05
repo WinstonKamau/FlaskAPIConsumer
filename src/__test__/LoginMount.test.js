@@ -4,6 +4,7 @@ import Enzyme from 'enzyme';
 import { mount, simulate } from 'enzyme'
 import { expect } from 'chai';
 import { Login } from '../Login';
+import sinon from 'sinon';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -70,5 +71,12 @@ describe('<Login State Changes/>', () => {
     wrapper.instance().handleChangeEmail({ target: { value: 'example@email.com' } });
     expect(wrapper.state().user_email).to.equal('example@email.com');
   });
+  it('handleSubmit is called', () => {
+    sinon.spy(Login.prototype, 'handleSubmit');
+    const wrapper = mount(<Login />);
+    wrapper.instance().handleSubmit({ preventDefault: () => {} });
+    expect(Login.prototype.handleSubmit.calledOnce).to.equal(true);
+  });
+
 });
 

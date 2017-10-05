@@ -5,6 +5,7 @@ import { shallow } from 'enzyme';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { expect } from 'chai';
+import { Redirect } from 'react-router-dom';
 import { CreateBucketModal, BucketTable, DeleteBucketModal,
   SearchBucket, SearchBucketTable, MainPage } from '../BucketListComponent';
 
@@ -19,18 +20,18 @@ describe('<CreateBucketModal />', () => {
     const wrapper = shallow(<CreateBucketModal />);
     expect(wrapper.find('form')).to.have.length(1);
   });
-  it('renders an input form', () => {
-    const wrapper = shallow(<CreateBucketModal />);
-    expect(wrapper.find('input')).to.have.length(1);
-  });
 });
 
 describe('<BucketTable />', () => {
   it('renders helpblock once there are no buckets', () => {
     const wrapper = shallow(<BucketTable data={[]} />);
     expect(wrapper.contains(
-      <HelpBlock>You have not yet created a bucket</HelpBlock>)).to.equal(true);
+      <Redirect to="/" />)).to.equal(true);
   });
+  it('', () => {
+    const wrapper = shallow(<BucketTable data={[]} />);
+  });
+
   it('renders a table if there are buckets and that the names exist', () => {
     const wrapper = shallow(<BucketTable data={[{ name: 'Example1' }, { name: 'Example2' }]} />);
     expect(wrapper.contains(

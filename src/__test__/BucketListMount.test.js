@@ -5,6 +5,8 @@ import { Modal } from 'react-bootstrap';
 import { mount, simulate, shallow, render } from 'enzyme'
 import { expect } from 'chai';
 import { Redirect } from 'react-router-dom';
+import sinon from 'sinon';
+import { MemoryRouter } from 'react-router-dom';
 
 import { BucketList } from '../BucketList';
 
@@ -245,5 +247,114 @@ it('open activities methods test', () => {
     expect(wrapper.state().activityButtonStatus).to.equal(false);
     expect(wrapper.state().bucketChosenTitle).to.equal('BucketName:');
 });
-
+it('calls componentWillMount', () => {
+    sinon.spy(BucketList.prototype, 'componentWillMount');
+    const wrapper = mount(<BucketList />);
+    expect(BucketList.prototype.componentWillMount.calledOnce).to.equal(true);
+  });
+  it('calls updateTable', () => {
+    sinon.spy(BucketList.prototype, 'updateTable');
+    const wrapper = mount(<BucketList />);
+    wrapper.instance().updateTable();
+    expect(BucketList.prototype.updateTable.calledOnce).to.equal(true);
+  });
+  it('calls handleSubmit for create Bucket', () => {
+    sinon.spy(BucketList.prototype, 'handleSubmit');
+    const wrapper = mount(<BucketList />);
+    wrapper.instance().handleSubmit({ target: { name: 'createBucketForm' },
+      preventDefault: () => {}
+    });
+    expect(BucketList.prototype.handleSubmit.called).to.equal(true);
+  });
+  it('calls handleSubmit for edit Bucket', () => {
+    const wrapper = mount(<BucketList />);
+    wrapper.instance().handleSubmit({ target: { name: 'editBucketForm' },
+      preventDefault: () => {}
+    });
+    expect(BucketList.prototype.handleSubmit.called).to.equal(true);
+  });
+  it('calls handleSubmit for delete Bucket', () => {
+    const wrapper = mount(<BucketList />);
+    wrapper.instance().handleSubmit({ target: { name: 'deleteBucketForm' },
+      preventDefault: () => {}
+    });
+    expect(BucketList.prototype.handleSubmit.called).to.equal(true);
+  });
+  it('calls handleSubmit for create Activity', () => {
+    const wrapper = mount(<BucketList />);
+    wrapper.instance().handleSubmit({ target: { name: 'createActivityForm' },
+      preventDefault: () => {}
+    });
+    expect(BucketList.prototype.handleSubmit.called).to.equal(true);
+  });
+  it('calls handleSubmit for edit Activity', () => {
+    const wrapper = mount(<BucketList />);
+    wrapper.instance().handleSubmit({ target: { name: 'editActivityForm' },
+      preventDefault: () => {}
+    });
+    expect(BucketList.prototype.handleSubmit.called).to.equal(true);
+  });
+  it('calls handleSubmit for delete Activity', () => {
+    const wrapper = mount(<BucketList />);
+    wrapper.instance().handleSubmit({ target: { name: 'deleteActivityForm' },
+      preventDefault: () => {}
+    });
+    expect(BucketList.prototype.handleSubmit.called).to.equal(true);
+  });
+  it('calls open for search Button', () => {
+    sinon.spy(BucketList.prototype, 'open');
+    const wrapper = mount(<BucketList />);
+    wrapper.instance().open({ target: { name: 'searchButton', id: 2, value: 'bucket1' }
+    });
+    expect(BucketList.prototype.open.called).to.equal(true);
+    expect(wrapper.state().bucketIDCreateActivity).to.equal(2);
+    expect(wrapper.state().bucketChosen).to.equal('bucket1');
+    expect(wrapper.state().activityButtonStatus).to.equal(false);
+  });
+  it('calls handlePages', () => {
+    sinon.spy(BucketList.prototype, 'handlePages');
+    const wrapper = mount(<BucketList />);
+    wrapper.instance().handlePages({ target: '' });
+    expect(BucketList.prototype.handlePages.called).to.equal(true);
+  });
+  // it('redirect on change of state', () => {
+  //   const wrapper = mount(<MemoryRouter>
+  //     <BucketList />
+  //   </MemoryRouter>
+  //   );
+  //   wrapper.setState({ authState: true });
+  //   console.log(wrapper.state().authState);
+  //   console.log(wrapper.contains(<Redirect to="/auth/" />));
+  //   console.log(wrapper.text());
+  // });
 });
+
+describe('<BucketList />', () => {
+  it('calls handleClick', () => {
+    sinon.spy(BucketList.prototype, 'handleClick');
+    const wrapper = mount(<BucketList />);
+    const pop = { bucketListToken: 'this is awesome' };
+    global.localStorage = {
+      bucketListToken: '',
+      removeItem: function() {
+        return ""
+      }, getItem: function() {
+        return pop["bucketListToken"]
+      }
+    };
+    wrapper.instance().handleClick({ target: { name: 'logout' } });
+    expect(BucketList.prototype.handleClick.calledOnce).to.equal(true);
+  }); 
+  it('calls handleClick', () => {
+    const wrapper = mount(<BucketList />);
+    const pop = { bucketListToken: null };
+    global.localStorage = {
+      bucketListToken: '', getItem: function() {
+        return pop["bucketListToken"]
+      }
+    };
+    expect(wrapper.contains(<Redirect to="/" />)).to.equal(true);
+  });
+});
+
+
