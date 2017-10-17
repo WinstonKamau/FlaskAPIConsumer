@@ -100,9 +100,18 @@ export class BucketList extends Component{
         var authorizationValue = {
             headers: {'Authorization': token}
           };
-        axios.get('http://localhost:5000/bucketlists/', authorizationValue
+          axios.get('http://localhost:5000/bucketlists/?page=1', authorizationValue
         ).then( response => {
-            this.setState({buckets:response.data})
+            let buttonArray = [];
+            if(response.data["pages"] > 1 ){
+                for ( let i=1; i <= response.data["pages"]; i++){
+                    buttonArray.push(i);
+                };
+            }
+            this.setState({
+                buckets:response.data["message"],
+                pageButtons: buttonArray
+            })
         })
         .catch( error => {
             if (error.response === undefined){
@@ -122,9 +131,11 @@ export class BucketList extends Component{
         axios.get('http://localhost:5000/bucketlists/?page=1', authorizationValue
         ).then( response => {
             let buttonArray = [];
-            for ( let i=1; i <= response.data["pages"]; i++){
-                buttonArray.push(i);
-            };
+            if(response.data["pages"] > 1 ){
+                for ( let i=1; i <= response.data["pages"]; i++){
+                    buttonArray.push(i);
+                };
+            }
             this.setState({
                 buckets:response.data["message"],
                 pageButtons: buttonArray
@@ -230,7 +241,7 @@ export class BucketList extends Component{
             activityButtonStatus: false,
             bucketChosenTitle: "BucketName:",
         })
-        axios.get('http://localhost:5000/bucketlists/' + event.target.value +'/items/', authorizationValue
+        axios.get('http://localhost:5000/bucketlists/' + event.target.value +'/items/?page=1', authorizationValue
         ).then( response => {
             this.setState({
                 activities:response.data,
@@ -259,9 +270,30 @@ export class BucketList extends Component{
                     createStatusForm: null,
                     showModal: false,
                     successMessage: "Bucket Created",
+                    bucketChosen: this.state.new_bucket,
+                    activityButtonStatus: false,
+                    bucketChosenTitle: "BucketName:",
+                    bucketIDCreateActivity: response.data['id']
+
                 });
+                console.log(response.data)
                 this.updateTable();
                 this.showSuccessMessage()
+                axios.get('http://localhost:5000/bucketlists/' + event.target.value +'/items/', authorizationValue
+                ).then( response => {
+                    this.setState({
+                        activities:response.data,
+                });
+                })
+                .catch( error => {
+                    if (error.response === undefined){
+                    this.showError()
+                    }
+                    else{
+                    this.setState({errorMessage: error.response.data["message"]});
+                    this.showDescriptiveError();
+                    }
+                });
             })
             .catch( error => {
                 if (error.response === undefined){
@@ -291,7 +323,7 @@ export class BucketList extends Component{
                         bucketChosen: this.state.potentialBucketName
                     })
                 }
-                this.componentWillMount();
+                this.updateTable();
                 this.showSuccessMessage()
             })
             .catch( error => {
@@ -322,7 +354,7 @@ export class BucketList extends Component{
                         bucketChosen: ""
                     })
                 }
-                this.componentWillMount();
+                this.updateTable();
                 this.showSuccessMessage();
             })
             .catch( error => {
