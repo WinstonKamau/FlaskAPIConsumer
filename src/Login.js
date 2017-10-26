@@ -40,9 +40,6 @@ export class Login extends Component{
       showAlert = () => {
         this.msg.show('You have been logged in!')
       }
-      showError = () => {
-        this.msg.error('Oops there is something wrong!')
-      }
     handleChangePassword(e){
         this.setState({user_password: e.target.value});
     }
@@ -63,13 +60,12 @@ export class Login extends Component{
           })
           .catch(error => {
             if (error.response === undefined){
-                this.showError()
+                alert('Oops there is something wrong')
             }
             else{
                 this.setState({loginErrorMessage: error.response.data["message"]});
                 this.showDescriptiveError();
             }
-
           });
         
     }
