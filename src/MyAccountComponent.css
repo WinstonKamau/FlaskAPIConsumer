@@ -1,0 +1,10 @@
+#tableAccounts, #tableTitle{
+    width: 90%;
+}
+#accountTitle{
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 250%;
+    padding: 50px;
+}
