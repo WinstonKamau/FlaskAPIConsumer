@@ -8,6 +8,7 @@ import AlertContainer from 'react-alert';
 export class BucketList extends Component{
     constructor(props){
         super(props);
+        this.handleActivityPages = this.handleActivityPages.bind(this);
         this.handlePages = this.handlePages.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -57,6 +58,7 @@ export class BucketList extends Component{
             activityPanelStatus: true,
             successMessage: '',
             pageButtons: [],
+            activityButtons: [],
         }
     }
     alertOptions = {
@@ -69,9 +71,6 @@ export class BucketList extends Component{
     showDescriptiveError = () => {
         this.msg.error(this.state.errorMessage)
     }
-    showError = () => {
-        // this.msg.error('Oops there is something wrong!')
-      }
     showSuccessMessage = () => {
         this.msg.success(this.state.successMessage)
     }
@@ -84,6 +83,7 @@ export class BucketList extends Component{
             })
             .catch( error => {
                 if (error.response === undefined){
+                alert('Oops there is something wrong')
                 }
                 else{
                     this.setState({errorMessage: error.response.data["message"]});
@@ -115,7 +115,7 @@ export class BucketList extends Component{
         })
         .catch( error => {
             if (error.response === undefined){
-                this.showError()
+                alert('Oops there is something wrong')
             }
             else{
                 this.setState({errorMessage: error.response.data["message"]});
@@ -143,7 +143,7 @@ export class BucketList extends Component{
         })
         .catch( error => {
             if (error.response === undefined){
-                this.showError()
+                alert('Oops there is something wrong')
             }
             else{
                 this.setState({errorMessage: error.response.data["message"]});
@@ -152,13 +152,13 @@ export class BucketList extends Component{
         });
         if (this.state.bucketIDCreateActivity != null )
             {
-            axios.get('http://localhost:5000/bucketlists/' + this.state.bucketIDCreateActivity +'/items/', authorizationValue
+            axios.get('http://localhost:5000/bucketlists/' + this.state.bucketIDCreateActivity +'/items/?page=1', authorizationValue
             ).then( response => {
-                this.setState({activities:response.data});
+                this.setState({activities:response.data["message"]});
             })
             .catch( error => {
                 if (error.response === undefined){
-                    this.showError()
+                    alert('Oops there is something wrong')
                 }
                 else{
                     this.setState({errorMessage: error.response.data["message"]});
@@ -213,7 +213,7 @@ export class BucketList extends Component{
                 })
                 .catch( error => {
                     if (error.response === undefined){
-                        this.showError()
+                        alert('Oops there is something wrong')
                     }
                     else{
                         this.setState({errorMessage: error.response.data["message"]});
@@ -243,13 +243,20 @@ export class BucketList extends Component{
         })
         axios.get('http://localhost:5000/bucketlists/' + event.target.value +'/items/?page=1', authorizationValue
         ).then( response => {
+            let buttonArray = [];
+            if(response.data["pages"] > 1 ){
+                for ( let i=1; i <= response.data["pages"]; i++){
+                    buttonArray.push(i);
+                };
+            }
             this.setState({
-                activities:response.data,
+                activities:response.data["message"],
+                activityButtons: buttonArray
             });
         })
         .catch( error => {
             if (error.response === undefined){
-                this.showError()
+                alert('Oops there is something wrong')
             }
             else{
                 this.setState({errorMessage: error.response.data["message"]});
@@ -276,7 +283,6 @@ export class BucketList extends Component{
                     bucketIDCreateActivity: response.data['id']
 
                 });
-                console.log(response.data)
                 this.updateTable();
                 this.showSuccessMessage()
                 axios.get('http://localhost:5000/bucketlists/' + event.target.value +'/items/', authorizationValue
@@ -287,7 +293,7 @@ export class BucketList extends Component{
                 })
                 .catch( error => {
                     if (error.response === undefined){
-                    this.showError()
+                        alert('Oops there is something wrong')
                     }
                     else{
                     this.setState({errorMessage: error.response.data["message"]});
@@ -297,7 +303,7 @@ export class BucketList extends Component{
             })
             .catch( error => {
                 if (error.response === undefined){
-                    this.showError()
+                    alert('Oops there is something wrong')
                 }
                 else{
             
@@ -328,7 +334,7 @@ export class BucketList extends Component{
             })
             .catch( error => {
                 if (error.response === undefined){
-                    this.showError()
+                    alert('Oops there is something wrong')
                 }
                 else{
                     this.setState({
@@ -359,7 +365,7 @@ export class BucketList extends Component{
             })
             .catch( error => {
                 if (error.response === undefined){
-                    this.showError()
+                    alert('Oops there is something wrong')
                 }
                 else{
                     this.setState({errorMessage: error.response.data["message"]});
@@ -381,11 +387,10 @@ export class BucketList extends Component{
                 });
                 this.updateTable();
                 this.showSuccessMessage();
-                console.log(response.data);
             })
             .catch( error => {
                 if (error.response === undefined){
-                    this.showError()
+                    alert('Oops there is something wrong')
                 }
                 else{
                     this.setState({createStatusActivityForm: "error"});
@@ -410,7 +415,7 @@ export class BucketList extends Component{
             })
             .catch( error => {
                 if (error.response === undefined){
-                    this.showError()
+                    alert('Oops there is something wrong')
                 }
                 else{
                 this.setState({
@@ -435,7 +440,7 @@ export class BucketList extends Component{
             })
             .catch( error => {
                 if (error.response === undefined){
-                    this.showError()
+                    alert('Oops there is something wrong')
                 }
                 else{
                     this.setState({errorMessage: error.response.data["message"]});
@@ -494,17 +499,24 @@ export class BucketList extends Component{
                 bucketChosen: e.target.value,
                 activityButtonStatus: false
                 })
-            axios.get('http://localhost:5000/bucketlists/' + e.target.id +'/items/', authorizationValue
+            axios.get('http://localhost:5000/bucketlists/' + e.target.id +'/items/?page=1', authorizationValue
             ).then( response => {
+                let buttonArray = [];
+                if(response.data["pages"] > 1 ){
+                    for ( let i=1; i <= response.data["pages"]; i++){
+                        buttonArray.push(i);
+                    };
+                }
                 this.setState({
-                    activities:response.data,
-                    successMessage: "Bucket opened"
+                    activities:response.data["message"],
+                    successMessage: "Bucket opened",
+                    activityButtons: buttonArray
                     });
                 this.showSuccessMessage()
                 })
             .catch( error => {
                 if (error.response === undefined){
-                    this.showError()
+                    alert('Oops there is something wrong')
                 }
                 else{
                     this.setState({errorMessage: error.response.data["message"]});
@@ -539,14 +551,41 @@ export class BucketList extends Component{
         })
         .catch( error => {
             if (error.response === undefined){
-                this.showError()
+                alert('Oops there is something wrong')
             }
             else{
                 this.setState({errorMessage: error.response.data["message"]});
                 this.showDescriptiveError();
             }
         });
-        
+    }
+    handleActivityPages(event){
+        var token = localStorage.getItem('bucketListToken');
+        var authorizationValue = {
+            headers: {'Authorization': token}
+          };
+        axios.get('http://localhost:5000/bucketlists/' + event.target.id +'/items/?page=' + event.target.value, authorizationValue
+        ).then( response => {
+            let buttonArray = [];
+            if(response.data["pages"] > 1 ){
+                for ( let i=1; i <= response.data["pages"]; i++){
+                    buttonArray.push(i);
+                };
+            }
+            this.setState({
+                activities: response.data["message"],
+                activityButtons: buttonArray
+            });
+        })
+        .catch( error => {
+            if (error.response === undefined){
+                alert('Oops there is something wrong')
+            }
+            else{
+                this.setState({errorMessage: error.response.data["message"]});
+                this.showDescriptiveError();
+            }
+        });
     }
     close(e) {
         if (e === undefined )
@@ -630,7 +669,8 @@ export class BucketList extends Component{
                 searchBucketStatus={this.state.searchBucketStatus} handleChange={this.handleChange} searchData={this.state.bucketFound}
                 handleClick={this.handleClick} bucketChosenTitle={this.state.bucketChosenTitle}  onHover={this.onHover}
                 activityPanelStatus={this.state.activityPanelStatus} onMouseOut={this.onMouseOut} pageButtons={this.state.pageButtons}
-                handlePages={this.handlePages}/>
+                handlePages={this.handlePages} handleActivityPages= {this.handleActivityPages} activityButtons={this.state.activityButtons}
+                bucketId={this.state.bucketIDCreateActivity}/>
                 <div>
                     <CreateBucketModal showModal={this.state.showModal} close={this.close} handleSubmit={this.handleSubmit}
                     createStatusForm={this.state.createStatusForm} createBucketError={this.state.createBucketError}
