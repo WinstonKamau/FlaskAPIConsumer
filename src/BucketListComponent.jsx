@@ -52,11 +52,14 @@ export class BucketTable extends Component {
                 <td>
                   <BucketWithTooltip tooltip="Click to view activities" href="#" id="tooltip-1">
                     <Button
+                      bsStyle="info"
+                      bsSize="large"
                       type="submit"
                       onClick={this.props.openActivities}
                       name="viewActivitiesButton"
                       id={row.name}
                       value={row.id}
+                      block
                     >{row.name} </Button>
                   </BucketWithTooltip>
                 </td>
@@ -141,17 +144,20 @@ export class EditBucketModal extends Component {
 export class SearchBucket extends Component {
   render() {
     return (
-      <FormGroup  bsSize="small" validationState={this.props.searchBucketStatus}>
+      <FormGroup bsSize="small" validationState={this.props.searchBucketStatus}>
         <HelpBlock>{this.props.searchBucketError}</HelpBlock>
         <FormControl
           name="searchBucket"
-          type="text"
+          type="search"
           value={this.props.value}
-          placeholder="Search bucketname"
+          placeholder="Search bucket"
           onChange={this.props.handleChange}
+
         />
         <FormControl.Feedback />
+
       </FormGroup>
+
     );
   }
 }
@@ -163,7 +169,7 @@ export class SearchBucketTable extends Component {
       );
     }
     return (
-      <DropdownButton defaultOpen={true} id="bg-vertical-dropdown-1">    
+      <DropdownButton id="searchResults" defaultOpen={true} bsSize="small" title="Buckets">
         {this.props.data.map(row =>
           (
             <ListGroupItem
@@ -182,16 +188,7 @@ export class MainPage extends Component {
     return (
       <div>
         <div className="page-header col-md-12 col-sm-12 col-xs-12" id="titleMainPage" >
-          <div className="col-md-3 col-sm-3 col-xs-3">
-            <SearchBucket
-              searchBucketError={this.props.searchBucketError}
-              value={this.props.value}
-              searchBucketStatus={this.props.searchBucketStatus}
-              handleChange={this.props.handleChange}
-            />
-          </div>
-          <div className="col-md-2 col-sm-2 col-xs-2">
-            <SearchBucketTable data={this.props.searchData} open={this.props.open} />
+          <div className="col-md-5 col-sm-5 col-xs-5">
           </div>
           <div className="col-md-5 col-sm-5 col-xs-5">
             <span id="titleHeader">The Bucket List !</span>
@@ -212,17 +209,34 @@ export class MainPage extends Component {
         </div>
         <div className="panel col-md-6 col-sm-6 col-xs-6" id="bucketPanel" >
           <div className="panel-heading">
-            <span id="bucketListHeading">My Bucket List</span>
-            <Button
-              id="createBucket"
-              name="createBucketButton"
-              bsStyle="primary"
-              onClick={this.props.open}
-              bsSize="small"
-            >Create New Bucket</Button>
+            <div className="col-md-5 col-sm-5 col-xs-5" id="bucketPanel" >
+              <span id="bucketListHeading">My Bucket List</span>
+            </div>
+            <div className="col-md-3 col-sm-3 col-xs-3" id="bucketPanel" >
+              <Button
+                id="createBucket"
+                name="createBucketButton"
+                bsStyle="primary"
+                onClick={this.props.open}
+                bsSize="small"
+              >Create New Bucket</Button>
+            </div>
+            <div className="col-md-4 col-sm-4 col-xs-4" id="bucketPanel" >
+              <div className="input-group">
+                <div className="input-group-btn">
+                  <SearchBucketTable data={this.props.searchData} open={this.props.open} />
+                </div>
+                <SearchBucket
+                  searchBucketError={this.props.searchBucketError}
+                  value={this.props.value}
+                  searchBucketStatus={this.props.searchBucketStatus}
+                  handleChange={this.props.handleChange}
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            {this.props.pageButtons.map(button =>(
+          <div className="col-md-12 col-sm-12 col-xs-12" >
+            {this.props.pageButtons.map(button => (
               <Button onClick={this.props.handlePages} value={button}>{button}</Button>
             ))
             }
@@ -254,6 +268,16 @@ export class MainPage extends Component {
             bsStyle="primary" onClick={this.props.open}
             bsSize="small" disabled={this.props.activityButtonStatus}
           >Create New Activity</Button>
+          <div className="col-md-12 col-sm-12 col-xs-12" >
+            {this.props.activityButtons.map( button => (
+              <Button
+                onClick={this.props.handleActivityPages}
+                id={this.props.bucketId}
+                value={button}
+              >{button}</Button>
+            ))
+            }
+          </div>
           <div className="panel-body">
             <ActivityTable data={this.props.activityData} open={this.props.open}/>
           </div>
@@ -263,7 +287,7 @@ export class MainPage extends Component {
   }
 }
 
-class BucketWithTooltip extends Component {
+export class BucketWithTooltip extends Component {
   render() {
     const tooltip = <Tooltip id={this.props.id}>{this.props.tooltip}</Tooltip>;
 
