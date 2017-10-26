@@ -7,7 +7,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import { expect } from 'chai';
 import { Redirect } from 'react-router-dom';
 import { CreateBucketModal, BucketTable, DeleteBucketModal,
-  SearchBucket, SearchBucketTable, MainPage } from '../BucketListComponent';
+  SearchBucket, SearchBucketTable, MainPage, BucketWithTooltip } from '../BucketListComponent';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -86,25 +86,33 @@ describe('<SearchBucketTable />', () => {
 
 describe('<MainPage />', () => {
   it('renders two menu items', () => {
-    const wrapper = shallow(<MainPage pageButtons={[]} />);
+    const wrapper = shallow(<MainPage pageButtons={[]} activityButtons={[]} />);
     expect(wrapper.find('MenuItem')).to.have.length(2);
   });
   it('renders two five buttons' , () => {
-    const wrapper = shallow(<MainPage pageButtons={[1, 2, 3, 4, 5]} />);
+    const wrapper = shallow(<MainPage pageButtons={[1, 2, 3, 4, 5]} activityButtons={[]} />);
+    expect(wrapper.find('Button')).to.have.length(7);
+  });
+  it('renders two and five activity buttons' , () => {
+    const wrapper = shallow(<MainPage pageButtons={[]} activityButtons={[1, 2, 3, 4, 5]} />);
     expect(wrapper.find('Button')).to.have.length(7);
   });
   it('renders shown title and bucket name', () => {
     const wrapper = shallow(
-      <MainPage pageButtons={[]} bucketChosenTitle="ExampleBucket" bucketChosen="ExampleName" />);
+      <MainPage pageButtons={[]} activityButtons={[]} bucketChosenTitle="ExampleBucket" bucketChosen="ExampleName" />);
     expect(wrapper.contains(<strong>ExampleBucket</strong>)).to.equal(true);
     expect(wrapper.contains(<strong id="bucketName">ExampleName</strong>)).to.equal(true);
   });
   it('renders all items', () => {
-    const wrapper = shallow(<MainPage pageButtons={[]} />);
+    const wrapper = shallow(<MainPage pageButtons={[]} activityButtons={[]} />);
     expect(wrapper.find('SearchBucket')).to.have.length(1);
     expect(wrapper.find('SearchBucketTable')).to.have.length(1);
     expect(wrapper.find('BucketTable')).to.have.length(1);
     expect(wrapper.find('DropdownButton')).to.have.length(1);
     expect(wrapper.find('ActivityTable')).to.have.length(1);
+  });
+  it('renders all items', () => {
+    const wrapper = shallow(<BucketWithTooltip pageButtons={[]} activityButtons={[]} />);
+    expect(wrapper.find('OverlayTrigger')).to.have.length(1);
   });
 });

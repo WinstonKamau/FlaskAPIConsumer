@@ -77,6 +77,5 @@ describe('<Login State Changes/>', () => {
     wrapper.instance().handleSubmit({ preventDefault: () => {} });
     expect(Login.prototype.handleSubmit.calledOnce).to.equal(true);
   });
-
 });
 

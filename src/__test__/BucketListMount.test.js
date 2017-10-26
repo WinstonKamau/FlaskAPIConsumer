@@ -334,7 +334,18 @@ describe('<BucketList />', () => {
     };
     wrapper.instance().handleClick({ target: { name: 'logout' } });
     expect(BucketList.prototype.handleClick.calledOnce).to.equal(true);
-  }); 
+  });
+  it('calls handleClick', () => {
+    const pop = { bucketListToken: null };
+    global.localStorage = {
+      bucketListToken: null,
+     getItem: function() {
+        return pop["bucketListToken"]
+      }
+    };
+    const wrapper = mount(<MemoryRouter><BucketList /></MemoryRouter>);
+    expect(wrapper.contains(<Redirect to="/" />)).to.equal(true);
+  });
 });
 
 
