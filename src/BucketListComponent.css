@@ -5,7 +5,7 @@
     background-color:  #e6eeff;
 }
 #bucketListHeading{
-    font-size: 200%;
+    font-size: 220%;
     font-family: "Times New Roman", Times, serif;
     font-weight: bold;
 }
@@ -21,7 +21,10 @@
     color: 	 #002266;
 }
 #createBucket{
-    margin-left: 100px;
+    margin-top: 10px;
+}
+#searchResults{
+    margin-top: 10px;
 }
 #titleHeader {
     font-family: "Times New Roman", Times, serif;
