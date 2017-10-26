@@ -39,9 +39,6 @@ export class Register extends Component{
       showAlert = () => {
         this.msg.success('You have been logged in!')
       }
-      showError = () => {
-        this.msg.error('Oops there is something wrong!')
-      }
       showDescriptiveError = () => {
         this.msg.error(this.state.loginRegisterErrorMessage);
       }
@@ -108,19 +105,17 @@ export class Register extends Component{
               })
               .catch( error => {
                 if (error.response === undefined){
-                    this.showError()
+                    alert ('There is something wrong')
                 }
                 else{
                     this.setState({loginRegisterErrorMessage: error.response.data["message"]});
                     this.showDescriptiveError();
                 }
               });
-           
-
           })
           .catch( error => {
             if (error.response === undefined)
-                {this.showError()}
+                {alert ('There is something wrong')}
             else{
             this.setState({
                 userConflictStatus: "error",

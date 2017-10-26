@@ -42,9 +42,6 @@ export class Account extends Component {
     showSuccess = () =>{
         this.msg.success(this.state.successMessage);
     }
-    showError = () => {
-        this.msg.error('Oops there is something wrong!')
-      }
     handleClick(event) {
         if ( event.target.id === "passwordButton") {
         this.setState({showAccountModal: true});
@@ -99,8 +96,7 @@ export class Account extends Component {
           })
           .catch(error => {
             if (error.response === undefined){
-                this.setState({showAccountModal: true})
-                this.showError()
+                alert('There is something wrong');
             }
             else{
                 this.setState({showAccountModal:true})
@@ -159,8 +155,9 @@ export class Account extends Component {
               }
           })
           .catch(error => {
+              
               if (error.response === undefined) {
-                this.showError()
+                alert('Oops there is something wrong')
                 }
               else{
                 this.setState({errorMessage: error.response.data["message"]})
