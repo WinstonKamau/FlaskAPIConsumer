@@ -48,7 +48,7 @@ export class Login extends Component{
     }
     handleSubmit(event){
         event.preventDefault();
-        axios.post('http://10.142.0.2:8000/auth/login', {
+        axios.post('http://10.142.0.3:8000/auth/login', {
             user_email: this.state.user_email,
             user_password: this.state.user_password 
           })
