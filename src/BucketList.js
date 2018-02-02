@@ -78,7 +78,7 @@ export class BucketList extends Component{
         if(eventKey.target.name === "logout"){
             localStorage.removeItem("bucketListToken");
             this.setState({logoutChosen: true});
-            axios.post('http://localhost:5000/auth/logout')
+            axios.post('http://35.185.33.149:8000/auth/logout')
             .then( response => {
             })
             .catch( error => {
@@ -100,7 +100,7 @@ export class BucketList extends Component{
         var authorizationValue = {
             headers: {'Authorization': token}
           };
-          axios.get('http://localhost:5000/bucketlists/?page=1', authorizationValue
+          axios.get('http://35.185.33.149:8000/bucketlists/?page=1', authorizationValue
         ).then( response => {
             let buttonArray = [];
             if(response.data["pages"] > 1 ){
@@ -128,7 +128,7 @@ export class BucketList extends Component{
         var authorizationValue = {
             headers: {'Authorization': token}
           };
-        axios.get('http://localhost:5000/bucketlists/?page=1', authorizationValue
+        axios.get('http://35.185.33.149:8000/bucketlists/?page=1', authorizationValue
         ).then( response => {
             let buttonArray = [];
             if(response.data["pages"] > 1 ){
@@ -152,7 +152,7 @@ export class BucketList extends Component{
         });
         if (this.state.bucketIDCreateActivity != null )
             {
-            axios.get('http://localhost:5000/bucketlists/' + this.state.bucketIDCreateActivity +'/items/?page=1', authorizationValue
+            axios.get('http://35.185.33.149:8000/bucketlists/' + this.state.bucketIDCreateActivity +'/items/?page=1', authorizationValue
             ).then( response => {
                 this.setState({activities:response.data["message"]});
             })
@@ -192,7 +192,7 @@ export class BucketList extends Component{
                 var token = localStorage.getItem('bucketListToken');
                 var authorizationValue = {headers: {'Authorization': token}};
                 var searchParameter = {params: {q: e.target.value}};
-                axios.get('http://localhost:5000/bucketlists/?q='+ e.target.value,
+                axios.get('http://35.185.33.149:8000/bucketlists/?q='+ e.target.value,
                 authorizationValue, searchParameter
                 ).then( response => {
                     if (response.data["message"])
@@ -241,7 +241,7 @@ export class BucketList extends Component{
             activityButtonStatus: false,
             bucketChosenTitle: "BucketName:",
         })
-        axios.get('http://localhost:5000/bucketlists/' + event.target.value +'/items/?page=1', authorizationValue
+        axios.get('http://35.185.33.149:8000/bucketlists/' + event.target.value +'/items/?page=1', authorizationValue
         ).then( response => {
             let buttonArray = [];
             if(response.data["pages"] > 1 ){
@@ -270,7 +270,7 @@ export class BucketList extends Component{
         var authorizationValue = {headers: {'Authorization': token}};
         if (event.target.name === "createBucketForm")
             {
-            axios.post('http://localhost:5000/bucketlists/', {name: this.state.new_bucket}, authorizationValue
+            axios.post('http://35.185.33.149:8000/bucketlists/', {name: this.state.new_bucket}, authorizationValue
             ).then( response => {
                 this.setState({
                     createBucketError: '',
@@ -285,7 +285,7 @@ export class BucketList extends Component{
                 });
                 this.updateTable();
                 this.showSuccessMessage()
-                axios.get('http://localhost:5000/bucketlists/' + event.target.value +'/items/', authorizationValue
+                axios.get('http://35.185.33.149:8000/bucketlists/' + event.target.value +'/items/', authorizationValue
                 ).then( response => {
                     this.setState({
                         activities:response.data,
@@ -315,7 +315,7 @@ export class BucketList extends Component{
             }
         if (event.target.name === "editBucketForm")
             {
-            axios.put('http://localhost:5000/bucketlists/' + this.state.editBucketID,
+            axios.put('http://35.185.33.149:8000/bucketlists/' + this.state.editBucketID,
                 {name: this.state.potentialBucketName}, authorizationValue
             ).then( response => {
                 this.setState({
@@ -346,7 +346,7 @@ export class BucketList extends Component{
             }
         if (event.target.name === "deleteBucketForm")
             {
-            axios.delete('http://localhost:5000/bucketlists/' + this.state.deleteBucketID,
+            axios.delete('http://35.185.33.149:8000/bucketlists/' + this.state.deleteBucketID,
                          authorizationValue
             ).then( response => {
                 this.setState({
@@ -376,7 +376,7 @@ export class BucketList extends Component{
         if(event.target.name === "createActivityForm")
             {
             var urlString = this.state.bucketIDCreateActivity+'/items/';
-            axios.post('http://localhost:5000/bucketlists/'+urlString,
+            axios.post('http://35.185.33.149:8000/bucketlists/'+urlString,
                        {activity_name: this.state.newActivity}, authorizationValue
             ).then( response => {
                 this.setState({
@@ -400,7 +400,7 @@ export class BucketList extends Component{
             }
         if(event.target.name === "editActivityForm")
             {
-            axios.put('http://localhost:5000/bucketlists/' + this.state.bucketIDCreateActivity + '/items/' +
+            axios.put('http://35.185.33.149:8000/bucketlists/' + this.state.bucketIDCreateActivity + '/items/' +
             this.state.activityID, {activity_name: this.state.potentialActivityName}, authorizationValue)
             .then( response => {
                 this.setState({
@@ -427,7 +427,7 @@ export class BucketList extends Component{
             }
         if(event.target.name === "deleteActivityForm")
             {
-            axios.delete('http://localhost:5000/bucketlists/' + this.state.bucketIDCreateActivity + '/items/'+
+            axios.delete('http://35.185.33.149:8000/bucketlists/' + this.state.bucketIDCreateActivity + '/items/'+
             this.state.activityID, authorizationValue)
             .then( response => {
             this.setState({
@@ -499,7 +499,7 @@ export class BucketList extends Component{
                 bucketChosen: e.target.value,
                 activityButtonStatus: false
                 })
-            axios.get('http://localhost:5000/bucketlists/' + e.target.id +'/items/?page=1', authorizationValue
+            axios.get('http://35.185.33.149:8000/bucketlists/' + e.target.id +'/items/?page=1', authorizationValue
             ).then( response => {
                 let buttonArray = [];
                 if(response.data["pages"] > 1 ){
@@ -538,7 +538,7 @@ export class BucketList extends Component{
         var authorizationValue = {
             headers: {'Authorization': token}
           };
-        axios.get('http://localhost:5000/bucketlists/?page=' + event.target.value, authorizationValue
+        axios.get('http://35.185.33.149:8000/bucketlists/?page=' + event.target.value, authorizationValue
         ).then( response => {
             let buttonArray = [];
             for ( let i=1; i <= response.data["pages"]; i++){
@@ -564,7 +564,7 @@ export class BucketList extends Component{
         var authorizationValue = {
             headers: {'Authorization': token}
           };
-        axios.get('http://localhost:5000/bucketlists/' + event.target.id +'/items/?page=' + event.target.value, authorizationValue
+        axios.get('http://35.185.33.149:8000/bucketlists/' + event.target.id +'/items/?page=' + event.target.value, authorizationValue
         ).then( response => {
             let buttonArray = [];
             if(response.data["pages"] > 1 ){
