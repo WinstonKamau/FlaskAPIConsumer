@@ -87,13 +87,13 @@ export class Register extends Component{
     handleSubmit(event){
         event.preventDefault();
         localStorage.removeItem("bucketListToken");
-        axios.post('http://35.229.124.154:8000/auth/register', {
+        axios.post(process.env.REACT_APP_URL + 'auth/register', {
             user_email: this.state.user_email,
             user_password: this.state.user_password 
           })
           .then( response => {
             this.showAlert()
-            axios.post('http://35.229.124.154:8000/auth/login', {
+            axios.post(process.env.REACT_APP_URL + 'auth/login', {
                 user_email: this.state.user_email,
                 user_password: this.state.user_password 
               })

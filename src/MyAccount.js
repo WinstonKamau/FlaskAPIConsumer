@@ -52,7 +52,7 @@ export class Account extends Component {
         if ( event.target.name === "logout") {
             this.setState({logoutPage: true});
             localStorage.removeItem("bucketListToken");
-            axios.post('http://35.229.124.154:8000/auth/logout')
+            axios.post(process.env.REACT_APP_URL + 'auth/logout')
             .then( response => {
             })
             .catch( error => {
@@ -75,7 +75,7 @@ export class Account extends Component {
             })
         }
         if (event.target.name === "saveButton" ) {
-            axios.post('http://35.229.124.154:8000/auth/login', {
+            axios.post(process.env.REACT_APP_URL + 'auth/login', {
             user_email: this.state.accountEmail,
             user_password: this.state.oldPassword
           })
@@ -133,7 +133,7 @@ export class Account extends Component {
         event.preventDefault();
         var token = localStorage.getItem('bucketListToken');
         var authorizationValue = {headers: {'Authorization': token}};
-        axios.post('http://35.229.124.154:8000/auth/reset-password', {
+        axios.post(process.env.REACT_APP_URL + 'auth/reset-password', {
             user_password: this.state.oldPassword,
             new_password: this.state.newPassword,
             verify_new_password: this.state.confirmPassword
